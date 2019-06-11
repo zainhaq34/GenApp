@@ -1,5 +1,6 @@
 package com.example.generationapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,7 +10,9 @@ import android.widget.RelativeLayout;
 
 public class SliderActivity extends AppCompatActivity {
 
+
     RelativeLayout relativeLayout;
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +24,8 @@ public class SliderActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 startActivity(new Intent(SliderActivity.this, WebActivity.class));
+
+
                 return true;
             }
         });
