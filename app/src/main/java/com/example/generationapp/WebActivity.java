@@ -1,7 +1,9 @@
 package com.example.generationapp;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.nfc.Tag;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -24,17 +26,22 @@ import java.util.concurrent.TimeUnit;
 public class WebActivity extends AppCompatActivity {
 
     private static final String TAG = "MyApp";
+    CountDownTimer timer;
 
     private static String BASE_URL = "https://www.generation.com.pk/";
+    private  long TIMER_START = 30000;
+    private  long TIMER_END = 1000;
     WebView webView;
     SwipeRefreshLayout refreshLayout;
     RelativeLayout relativeLayout;
-
-
+    
+    @SuppressLint({"ClickableViewAccessibility", "SetJavaScriptEnabled"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
+
+
 
         relativeLayout = findViewById(R.id.relative_layout);
         refreshLayout = findViewById(R.id.refresh_layout);
@@ -46,6 +53,7 @@ public class WebActivity extends AppCompatActivity {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
+
         // Swipe Refresh
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -54,51 +62,57 @@ public class WebActivity extends AppCompatActivity {
             }
         });
 
+
+        /***
+         * Touch Functionality of web View
+         */
         webView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
-               startTimer();
+
+                //press touch - timer is cancel
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (timer != null) {
+                        timer.cancel();
+                        timer = null;
+                    }
+                    Log.e(TAG, "Press Touch");
+                    return false;
+                    // release touch - timer is start
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+
+                    startTimer();
+
+                    Log.e(TAG, "Release Touch");
+                    return false;
+                }
                 return false;
             }
         });
+
+        /***
+         * Every time start this activity call startTimer method
+         * Mean time count down start to initial
+         */
+       startTimer();
+
     }
 
-    private void startTimer(){
+    private void startTimer() {
+            timer = new CountDownTimer(TIMER_START, TIMER_END) {
 
-        new CountDownTimer(30000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    long sec = (TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
 
-
-
-            public void onTick(long millisUntilFinished) {
-
-                long sec = (TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-
-
-                Log.e(TAG,"onTick: "+sec );
-
-                if(sec == 1)
-                {
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Toast.makeText(getApplicationContext(), "Finish Time in 1 sec", Toast.LENGTH_SHORT).show();
-                        }
-                    }, 1000);
+                    Log.e(TAG, "onTick: " + sec);
                 }
-
-
-            }
-
-            public void onFinish() {
-               // tv_timer.setText("Timer finish");
-               // Toast.makeText(getApplicationContext(), "Finish Time", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(WebActivity.this, SliderActivity.class));
-            }
-        }.start();
-    }
-
+                // Stop Timer
+                public void onFinish() {
+                    startActivity(new Intent(WebActivity.this, SliderActivity.class));
+                }
+            }.start();
+        }
 
     @Override
     public void onBackPressed() {
@@ -110,8 +124,7 @@ public class WebActivity extends AppCompatActivity {
                     .setIcon(R.drawable.ic_warning_icon)
                     .setTitle("Exit App")
                     .setMessage("Are you sure you want to close this App?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                    {
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             finish();
@@ -125,7 +138,20 @@ public class WebActivity extends AppCompatActivity {
 
     }
 
-    public class MyWebViewClient extends WebViewClient{
+
+    /***
+     * When Pause WebActivity CountTimerDown must be Cancel mode
+     * otherwise CountTimerDown create count time duplication
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (timer != null){
+            timer.cancel();
+        }
+    }
+
+    public class MyWebViewClient extends WebViewClient {
         @Override
         public void onPageFinished(WebView view, String url) {
             refreshLayout.setRefreshing(false);
