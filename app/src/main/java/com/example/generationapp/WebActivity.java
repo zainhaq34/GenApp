@@ -110,6 +110,7 @@ public class WebActivity extends AppCompatActivity {
                 // Stop Timer
                 public void onFinish() {
                     startActivity(new Intent(WebActivity.this, SliderActivity.class));
+                    finish();
                 }
             }.start();
         }
@@ -134,11 +135,7 @@ public class WebActivity extends AppCompatActivity {
                     .setNegativeButton("No", null)
                     .show();
         }
-
-
     }
-
-
     /***
      * When Pause WebActivity CountTimerDown must be Cancel mode
      * otherwise CountTimerDown create count time duplication

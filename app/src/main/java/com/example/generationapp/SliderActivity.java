@@ -24,8 +24,7 @@ public class SliderActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 startActivity(new Intent(SliderActivity.this, WebActivity.class));
-
-
+                finish();
                 return true;
             }
         });
