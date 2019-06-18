@@ -30,7 +30,7 @@ public class SplashActivity extends AppCompatActivity {
                 // This method will be executed once the timer is over
                 // Start your app main activity
 
-                startActivity(new Intent(SplashActivity.this, WebActivity.class));
+                startActivity(new Intent(SplashActivity.this, ScreenSaverActivity.class));
                 progressBar.setVisibility(View.GONE);
                 // close this activity
                 finish();

@@ -109,7 +109,7 @@ public class WebActivity extends AppCompatActivity {
                 }
                 // Stop Timer
                 public void onFinish() {
-                    startActivity(new Intent(WebActivity.this, SliderActivity.class));
+                    startActivity(new Intent(WebActivity.this, ScreenSaverActivity.class));
                     finish();
                 }
             }.start();
