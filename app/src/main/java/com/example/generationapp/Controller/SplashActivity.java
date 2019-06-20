@@ -1,22 +1,18 @@
 package com.example.generationapp.Controller;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
-
-import com.example.generationapp.Permission.PermissionManager;
 import com.example.generationapp.R;
 
 public class SplashActivity extends AppCompatActivity {
 
     private static final long SPLASH_TIME_OUT = 10000;
     ProgressBar progressBar;
-    PermissionManager permissionManager;
+
 
 
     @Override
@@ -26,24 +22,8 @@ public class SplashActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progress_circular);
 
-       // SplashStartUp();
+        SplashStartUp();
 
-
-//         permissionManager = new PermissionManager();
-//
-//
-//        //run Time Permission
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-//        {
-//            permissionManager.requestPermission(SplashActivity.this);
-//
-//
-//
-//
-//        }else {
-//            permissionManager.userHasPermission(SplashActivity.this);
-//
-//        }
     }
 
     private void SplashStartUp() {
@@ -65,6 +45,6 @@ public class SplashActivity extends AppCompatActivity {
         }, SPLASH_TIME_OUT);
 
     }
-    
+
 
 }
