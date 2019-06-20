@@ -1,10 +1,8 @@
-package com.example.generationapp;
+package com.example.generationapp.Controller;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.nfc.Tag;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,9 +16,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import java.util.Timer;
+import com.example.generationapp.R;
+
 import java.util.concurrent.TimeUnit;
 
 public class WebActivity extends AppCompatActivity {
@@ -29,18 +27,18 @@ public class WebActivity extends AppCompatActivity {
     CountDownTimer timer;
 
     private static String BASE_URL = "https://www.generation.com.pk/";
-    private  long TIMER_START = 30000;
-    private  long TIMER_END = 1000;
+    private long TIMER_START = 30000;
+    private long TIMER_END = 1000;
+    private static final long ALERT_DIALOG_TIME_OUT = 3000;
     WebView webView;
     SwipeRefreshLayout refreshLayout;
     RelativeLayout relativeLayout;
-    
+
     @SuppressLint({"ClickableViewAccessibility", "SetJavaScriptEnabled"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-
 
 
         relativeLayout = findViewById(R.id.relative_layout);
@@ -94,26 +92,27 @@ public class WebActivity extends AppCompatActivity {
          * Every time start this activity call startTimer method
          * Mean time count down start to initial
          */
-       startTimer();
+        startTimer();
 
     }
 
     private void startTimer() {
-            timer = new CountDownTimer(TIMER_START, TIMER_END) {
+        timer = new CountDownTimer(TIMER_START, TIMER_END) {
 
-                public void onTick(long millisUntilFinished) {
-                    long sec = (TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+            public void onTick(long millisUntilFinished) {
+                long sec = (TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
 
-                    Log.e(TAG, "onTick: " + sec);
-                }
-                // Stop Timer
-                public void onFinish() {
-                    startActivity(new Intent(WebActivity.this, ScreenSaverActivity.class));
-                    finish();
-                }
-            }.start();
-        }
+                Log.e(TAG, "onTick: " + sec);
+            }
+
+            // Stop Timer
+            public void onFinish() {
+                startActivity(new Intent(WebActivity.this, ScreenSaverActivity.class));
+                finish();
+            }
+        }.start();
+    }
 
     @Override
     public void onBackPressed() {
@@ -121,7 +120,7 @@ public class WebActivity extends AppCompatActivity {
             webView.goBack();
         } else {
 
-            new AlertDialog.Builder(this)
+            final AlertDialog alertDialog = new AlertDialog.Builder(this)
                     .setIcon(R.drawable.ic_warning_icon)
                     .setTitle("Exit App")
                     .setMessage("Are you sure you want to close this App?")
@@ -134,8 +133,18 @@ public class WebActivity extends AppCompatActivity {
                     })
                     .setNegativeButton("No", null)
                     .show();
+            // Auto Close Dialog
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    alertDialog.cancel();
+
+                }
+            }, ALERT_DIALOG_TIME_OUT);
         }
     }
+
     /***
      * When Pause WebActivity CountTimerDown must be Cancel mode
      * otherwise CountTimerDown create count time duplication
@@ -143,7 +152,7 @@ public class WebActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (timer != null){
+        if (timer != null) {
             timer.cancel();
         }
     }

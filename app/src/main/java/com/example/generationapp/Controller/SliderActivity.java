@@ -1,4 +1,4 @@
-package com.example.generationapp;
+package com.example.generationapp.Controller;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import com.example.generationapp.R;
 
 public class SliderActivity extends AppCompatActivity {
 
