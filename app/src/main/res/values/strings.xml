@@ -4,4 +4,6 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="dev_name">Developed By Glomax Solutions</string>
+    <string name="ver">v.1.0</string>
 </resources>

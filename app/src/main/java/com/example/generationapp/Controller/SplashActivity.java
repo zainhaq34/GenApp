@@ -26,7 +26,7 @@ public class SplashActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progress_circular);
 
-        SplashStartUp();
+       // SplashStartUp();
 
 
 //         permissionManager = new PermissionManager();
