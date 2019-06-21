@@ -191,7 +191,7 @@ public class WebActivity extends AppCompatActivity {
                             alertDialog = new AlertDialog.Builder(context);
 
                             alertDialog.setTitle("Internet not available");
-                            alertDialog.setMessage("Please Check your WiFi Setting.");
+                            alertDialog.setMessage("Please Check your internet connection.");
                             alertDialog.setIcon(R.drawable.ic_warning_icon);
                             alertDialog.setCancelable(false);
 
