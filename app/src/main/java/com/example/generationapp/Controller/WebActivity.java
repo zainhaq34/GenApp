@@ -173,7 +173,7 @@ public class WebActivity extends AppCompatActivity {
                 broadcastReceiver = new BroadcastReceiver() {
 
                     @Override
-                    public void onReceive(Context context, Intent intent) {
+                    public void onReceive(final Context context, Intent intent) {
 
                         Bundle extras = intent.getExtras();
 
@@ -191,34 +191,24 @@ public class WebActivity extends AppCompatActivity {
                             alertDialog = new AlertDialog.Builder(context);
 
                             alertDialog.setTitle("Internet not available");
-                            alertDialog.setMessage("Do you want to go to wifi settings?");
+                            alertDialog.setMessage("Please Check your WiFi Setting.");
                             alertDialog.setIcon(R.drawable.ic_warning_icon);
                             alertDialog.setCancelable(false);
-                            
 
-                            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                            alertDialog.setPositiveButton("Setting", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     //startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
                                     startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
-                                    //  startActivityForResult(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS), 0);
+                                     // startActivityForResult(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS), 0);
                                     //finish();
-                                    //webView.loadUrl(BASE_URL);
+                                  //  refreshDialog();
+
                                 }
                             });
-
-//                            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialogInterface, int i) {
-//                                   // finish();
-//                                    alertDialog.setCancelable(true);
-//                                }
-//                            });
-
                             alertDialog.show();
-
                         }
-                        webView.loadUrl(BASE_URL);
                     }
                 };
 
@@ -226,10 +216,26 @@ public class WebActivity extends AppCompatActivity {
                 intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
                 registerReceiver(broadcastReceiver, intentFilter);
             }
-
         }
 
+    public void refreshDialog(){
+        //Toast.makeText(getApplicationContext(), "Internet connection is Off", Toast.LENGTH_LONG).show();
+      AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
+        alertDialog.setTitle("Refresh Page");
+        alertDialog.setMessage("Check internet connection & Refresh Page");
+        alertDialog.setIcon(R.drawable.ic_refresh);
+        alertDialog.setCancelable(false);
+
+        alertDialog.setPositiveButton("REFRESH", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                webView.loadUrl(BASE_URL);
+            }
+        });
+
+        alertDialog.show();
+    }
 
     public class MyWebViewClient extends WebViewClient {
         @Override
