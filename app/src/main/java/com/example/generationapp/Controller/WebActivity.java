@@ -1,14 +1,21 @@
 package com.example.generationapp.Controller;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +23,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.generationapp.R;
 
@@ -33,6 +41,7 @@ public class WebActivity extends AppCompatActivity {
     WebView webView;
     SwipeRefreshLayout refreshLayout;
     RelativeLayout relativeLayout;
+    BroadcastReceiver broadcastReceiver;
 
     @SuppressLint({"ClickableViewAccessibility", "SetJavaScriptEnabled"})
     @Override
@@ -40,7 +49,7 @@ public class WebActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
 
-
+        checkInternetConnection();
         relativeLayout = findViewById(R.id.relative_layout);
         refreshLayout = findViewById(R.id.refresh_layout);
         webView = findViewById(R.id.web_view);
@@ -155,6 +164,77 @@ public class WebActivity extends AppCompatActivity {
         if (timer != null) {
             timer.cancel();
         }
+    }
+
+    public void checkInternetConnection() {
+
+            if (broadcastReceiver == null) {
+
+                broadcastReceiver = new BroadcastReceiver() {
+
+                    @Override
+                    public void onReceive(final Context context, Intent intent) {
+
+                        Bundle extras = intent.getExtras();
+
+                        NetworkInfo info = (NetworkInfo) extras.getParcelable("networkInfo");
+                        NetworkInfo.State state = info.getState();
+
+                        final AlertDialog.Builder alertDialog;
+
+                        if (state == NetworkInfo.State.CONNECTED) {
+                            //Toast.makeText(getApplicationContext(), "Internet connection is on", Toast.LENGTH_LONG).show();
+                            webView.loadUrl(BASE_URL);
+
+                        } else {
+                            //Toast.makeText(getApplicationContext(), "Internet connection is Off", Toast.LENGTH_LONG).show();
+                            alertDialog = new AlertDialog.Builder(context);
+
+                            alertDialog.setTitle("Internet not available");
+                            alertDialog.setMessage("Please Check your internet connection.");
+                            alertDialog.setIcon(R.drawable.ic_warning_icon);
+                            alertDialog.setCancelable(false);
+
+
+                            alertDialog.setPositiveButton("Setting", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    //startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                    startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
+                                     // startActivityForResult(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS), 0);
+                                    //finish();
+                                  //  refreshDialog();
+
+                                }
+                            });
+                            alertDialog.show();
+                        }
+                    }
+                };
+
+                final IntentFilter intentFilter = new IntentFilter();
+                intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+                registerReceiver(broadcastReceiver, intentFilter);
+            }
+        }
+
+    public void refreshDialog(){
+        //Toast.makeText(getApplicationContext(), "Internet connection is Off", Toast.LENGTH_LONG).show();
+      AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        alertDialog.setTitle("Refresh Page");
+        alertDialog.setMessage("Check internet connection & Refresh Page");
+        alertDialog.setIcon(R.drawable.ic_refresh);
+        alertDialog.setCancelable(false);
+
+        alertDialog.setPositiveButton("REFRESH", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                webView.loadUrl(BASE_URL);
+            }
+        });
+
+        alertDialog.show();
     }
 
     public class MyWebViewClient extends WebViewClient {

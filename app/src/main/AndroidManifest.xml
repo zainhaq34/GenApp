@@ -4,8 +4,8 @@
     package="com.example.generationapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
@@ -23,27 +23,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Controller.ScreenSaverActivity">
-        </activity>
+        <activity android:name=".Controller.ScreenSaverActivity"></activity>
         <activity android:name=".Controller.SliderActivity" />
-        <activity android:name=".Controller.WebActivity">
-        </activity>
+        <activity android:name=".Controller.WebActivity"></activity>
 
         <!--Boot Up Device auto run app-->
         <!--suppress AndroidDomInspection -->
         <receiver
+            android:name="com.example.generationapp.Utilities.ActivityRunOnStartup"
             android:enabled="true"
             android:exported="true"
-            android:name="com.example.generationapp.Utilities.ActivityRunOnStartup"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
 
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
+        <!--Network Receiver-->
+        <receiver android:name="com.example.generationapp.Controller.WebActivity" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
