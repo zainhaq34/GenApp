@@ -35,8 +35,10 @@ public class ScreenSaverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_saver);
 
+        //TODO -- Video Streamer Method call --
         VideoStreamer();
 
+        //TODO -- Touch Click  --
         videoView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -50,6 +52,7 @@ public class ScreenSaverActivity extends AppCompatActivity {
 
     }
 
+    //TODO -- Video Streamer Method --
     private void VideoStreamer() {
         videoView = findViewById(R.id.video_view);
         //  String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.video;
@@ -83,6 +86,7 @@ public class ScreenSaverActivity extends AppCompatActivity {
         });
     }
 
+    //TODO -- Upload Video File Dialog --
     private void UploadVideoDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Upload Video");
