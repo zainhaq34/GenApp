@@ -6,4 +6,6 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="dev_name">Developed By Glomax Solutions</string>
     <string name="ver">v.1.0</string>
+
+    <string name="video_file_isExist">There is no video file.\n Goto Folder <b><i>/Generation video</i></b> \nAdd video file. \nVideo file name must be as same format <b>(video.mp4)</b></string>
 </resources>
