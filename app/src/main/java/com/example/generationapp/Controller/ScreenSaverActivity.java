@@ -20,7 +20,6 @@ import com.example.generationapp.R;
 
 public class ScreenSaverActivity extends AppCompatActivity {
 
-    private final static int FILE_MANAGER_REQUEST_CODE = 105;
     private static final long ALERT_DIALOG_TIME_OUT = 3000;
     private static final String TAG = "";
 

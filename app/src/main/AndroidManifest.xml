@@ -24,7 +24,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Controller.ScreenSaverActivity"></activity>
-        <activity android:name=".Controller.SliderActivity" />
         <activity android:name=".Controller.WebActivity"></activity>
 
         <!--Boot Up Device auto run app-->
